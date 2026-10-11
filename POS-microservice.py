@@ -7,17 +7,23 @@ from email.mime.text import MIMEText
 
 st.title("Market Organizer!")
 
+#validations
+# Initialize session state safely
+if "inventory" not in st.session_state:
+    st.session_state.inventory = None
+
+if "receipt" not in st.session_state:
+    st.session_state.receipt = []
+
 #basic information
-brand_name=st.text_input("Please enter your organization's name:")
-if brand_name=="":
-    st.error("Please enter a valid name")
+brand_name = st.text_input("Please enter your organization's name:")
+email = st.text_input("Please enter your business email:")
 
-email=st.text_input("Please enter your business email:")
-if email=="":
-    st.error("Please enter email")
-
-if brand_name.strip()=="" or email.strip()=="":
-    st.error("Please fill all fields")
+if st.button("Save Details"):
+    if brand_name.strip() == "" or email.strip() == "":
+        st.error("Please fill all fields")
+    else:
+        st.success("Details saved!")
     
 #country and tax
 countries={
@@ -94,15 +100,11 @@ if st.session_state.page=="Track Inventory":
                 for i, row in no_items.iterrows():
                     item_name=row["Item name"]
                     send_alert(item_name, email)
-    else:
-        st.error("Please enter a file in correct format")
+            elif upload_file is None and st.session_state.inventory is None:
+                st.info("Upload a CSV to begin.")
+
 
 if st.session_state.page=="Make Receipt":
-    if "inventory" not in st.session_state:
-        st.error("Upload an inventory first.")
-        st.stop()
-    if "receipt" not in st.session_state:
-        st.session_state.receipt=[]
     items=st.selectbox("Select items ordered:", st.session_state.inventory["Item name"])
     qty = st.number_input("Quantity:", min_value=1)
     price = st.session_state.inventory.loc[
@@ -162,8 +164,8 @@ if st.session_state.page == "Z receipt":
         st.subheader("Z-Receipt (Daily Summary)")
         st.table(df)
         st.write("Daily Total:", daily_total)
-        st.write("Tax Added:", daily_total * tax_rate)
-        st.write("Grand Total:", daily_total + (daily_total * tax_rate))
+        st.write(st.write("Tax Added:", f"{daily_total * tax_rate:.2f}"))
+        st.write("Grand Total:", daily_total + (daily_total * tax_rate:.2f))
         st.write("Date:", datetime.now().strftime("%Y-%m-%d"))
 
 
