@@ -16,7 +16,7 @@ email=st.text_input("Please enter your business email:")
 if email=="":
     st.error("Please enter email")
 
-if brand_name=="" or email=="":
+if brand_name.strip()=="" or email.strip()=="":
     st.error("Please fill all fields")
     
 #country and tax
@@ -98,8 +98,9 @@ if st.session_state.page=="Track Inventory":
         st.error("Please enter a file in correct format")
 
 if st.session_state.page=="Make Receipt":
-    if not st.session_state.inventory:
+    if "inventory" not in st.session_state:
         st.error("Upload an inventory first.")
+        st.stop()
     if "receipt" not in st.session_state:
         st.session_state.receipt=[]
     items=st.selectbox("Select items ordered:", st.session_state.inventory["Item name"])
