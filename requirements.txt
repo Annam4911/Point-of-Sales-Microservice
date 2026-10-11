@@ -1,6 +1,6 @@
 streamlit
 pandas
-fpdf
+fpdf2
 email.mime.text
 smtplib
 datetime
