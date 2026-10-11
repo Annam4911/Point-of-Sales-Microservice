@@ -9,11 +9,11 @@ st.title("Market Organizer!")
 
 #basic information
 brand_name=st.text_input("Please enter your organization's name:")
-if not brand_name:
+if brand_name=="":
     st.error("Please enter a valid name")
 
 email=st.text_input("Please enter your business email:")
-if not email:
+if email=="":
     st.error("Please enter email")
 
 if brand_name=="" or email=="":
@@ -98,6 +98,8 @@ if st.session_state.page=="Track Inventory":
         st.error("Please enter a file in correct format")
 
 if st.session_state.page=="Make Receipt":
+    if not st.session_state.inventory:
+        st.error("Upload an inventory first.")
     if "receipt" not in st.session_state:
         st.session_state.receipt=[]
     items=st.selectbox("Select items ordered:", st.session_state.inventory["Item name"])
@@ -141,8 +143,8 @@ if st.session_state.page=="Make Receipt":
         pdf.cell(200, 10, txt=f"Tax amount added: {tax_added}", ln=True)
         pdf.cell(200, 12, txt=f"Grand Total: {grand_total}", ln=True)
         pdf.cell(200,30, txt="", ln=True)
-        pdf.add_font("DancingScript", "", "DancingScript-Regular.ttf", uni=True)
-        pdf.set_font("DancingScript", size=22)
+        pdf.add_font("Festive", "", "Festive-Regular.ttf", uni=True)
+        pdf.set_font("Festive", size=22)
         pdf.cell(200, 15, txt="Thank you for shopping!", ln=True)
         pdf.cell(200,20, txt="", ln=True)
         pdf.output("receipt.pdf")
