@@ -1,0 +1,6 @@
+streamlit
+pandas
+fpdf
+email.mime.text
+smtplib
+datetime
