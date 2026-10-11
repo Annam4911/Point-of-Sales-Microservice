@@ -16,7 +16,7 @@ email=st.text_input("Please enter your business email:")
 if not email:
     st.error("Please enter email")
 
-if not email and brand_name:
+if brand_name=="" or email=="":
     st.error("Please fill all fields")
     
 #country and tax
@@ -133,7 +133,7 @@ if st.session_state.page=="Make Receipt":
         pdf.cell(200, 20, txt=brand_name, ln=True)
         pdf.cell(200, 10, txt="", ln=True)
         pdf.set_font("Arial", size=12)
-        pdf.cell(200, 10, txt=f"Date: {datetime.datetime.now()}", ln=True)
+        pdf.cell(200, 10, txt=f"Date: {datetime.now()}", ln=True)
         pdf.cell(200,15, txt="", ln=True)
         for item in st.session_state.receipt:
             pdf.cell(200, 10, txt=f"{item['Items']} x {item['Quantity']} = {item['Subtotal']}", ln=True)
@@ -151,15 +151,17 @@ if st.session_state.page=="Make Receipt":
 
 
 if st.session_state.page == "Z receipt":
-
-    df = pd.DataFrame(st.session_state.receipt)
-    daily_total = df["Subtotal"].sum()
-    st.subheader("Z-Receipt (Daily Summary)")
-    st.table(df)
-    st.write("Daily Total:", daily_total)
-    st.write("Tax Added:", daily_total * tax_rate)
-    st.write("Grand Total:", daily_total + (daily_total * tax_rate))
-    st.write("Date:", datetime.now().strftime("%Y-%m-%d"))
+    if st.session_state.receipt == []:
+        st.error("No orders have been made yet!")
+    else:
+        df = pd.DataFrame(st.session_state.receipt)
+        daily_total = df["Subtotal"].sum()
+        st.subheader("Z-Receipt (Daily Summary)")
+        st.table(df)
+        st.write("Daily Total:", daily_total)
+        st.write("Tax Added:", daily_total * tax_rate)
+        st.write("Grand Total:", daily_total + (daily_total * tax_rate))
+        st.write("Date:", datetime.now().strftime("%Y-%m-%d"))
 
 
     
