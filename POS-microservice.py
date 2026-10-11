@@ -87,13 +87,13 @@ def send_alert(item_name, email):
 if "page" not in st.session_state:
     st.session_state.page = "Home"
     
-if st.button("Track Inventory"):
+if st.button("Track Inventory", key="nav_track"):
     st.session_state.page="Track Inventory"
 
-if st.button("Make a receipt"):
+if st.button("Make a receipt", key="nav_receipt"):
     st.session_state.page="Make Receipt"
 
-if st.button("Get Daily Summary"):
+if st.button("Get Daily Summary", key="nav_summary"):
     st.session_state.page="Z receipt"
 
 
