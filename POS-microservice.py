@@ -16,15 +16,28 @@ if "receipt" not in st.session_state:
     st.session_state.receipt = []
 
 #basic information
-brand_name = st.text_input("Please enter your organization's name:")
-email = st.text_input("Please enter your business email:")
+st.session_state.page="Basically.."
+if "details_saved" in st.session_state and st.session_state.details_saved:
+    st.success("Details saved!")
+    st.write("Now you can continue:")
+    st.button("Track Inventory")
+    st.button("Make a receipt")
+    st.button("Get Daily Summary")
 
-if st.button("Save Details"):
-    if brand_name.strip() == "" or email.strip() == "":
-        st.error("Please fill all fields")
-    else:
-        st.success("Details saved!")
-    
+else:
+    # Show inputs
+    brand_name = st.text_input("Please enter your organization's name:")
+    email = st.text_input("Please enter your business email:")
+
+    if st.button("Save Details"):
+        if brand_name.strip() == "" or email.strip() == "":
+            st.error("Please fill all fields")
+        else:
+            st.session_state.details_saved = True
+            st.session_state.brand_name = brand_name
+            st.session_state.email = email
+            st.rerun()
+  
 #country and tax
 countries={
     "United Arab Emirates": 5,
@@ -119,7 +132,6 @@ if st.session_state.page=="Make Receipt":
             "Individual Price": price,
             "Subtotal": subtotal
         })
-        st.write(pd.DataFrame(st.session_state.receipt))
         st.session_state.inventory.loc[
             st.session_state.inventory["Item name"] == items,
             "quantity"
@@ -135,7 +147,7 @@ if st.session_state.page=="Make Receipt":
         pdf=FPDF()
         pdf.add_page()
         pdf.set_font("Times", size=12)
-        pdf.cell(200, 20, txt=brand_name, ln=True)
+        pdf.cell(200, 60, txt=brand_name, ln=True)
         pdf.cell(200, 10, txt="", ln=True)
         pdf.set_font("Arial", size=12)
         pdf.cell(200, 10, txt=f"Date: {datetime.now()}", ln=True)
@@ -165,7 +177,7 @@ if st.session_state.page == "Z receipt":
         st.table(df)
         st.write("Daily Total:", daily_total)
         st.write(st.write("Tax Added:", f"{daily_total * tax_rate:.2f}"))
-        st.write("Grand Total:", daily_total + (daily_total * tax_rate:.2f))
+        st.write("Grand Total:", f"{daily_total + (daily_total * tax_rate):.2f}")
         st.write("Date:", datetime.now().strftime("%Y-%m-%d"))
 
 
