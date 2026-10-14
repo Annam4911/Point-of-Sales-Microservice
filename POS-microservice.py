@@ -20,10 +20,6 @@ st.session_state.page="Basically.."
 if "details_saved" in st.session_state and st.session_state.details_saved:
     st.success("Details saved!")
     st.write("Now you can continue:")
-    st.button("Track Inventory")
-    st.button("Make a receipt")
-    st.button("Get Daily Summary")
-
 else:
     # Show inputs
     brand_name = st.text_input("Please enter your organization's name:")
