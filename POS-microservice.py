@@ -67,7 +67,7 @@ if upload_file is not None:
         if not no_items.empty:
             for i, row in no_items.iterrows():
                 item_name=row["Item name"]
-                send_alert(item_name, email)
+                send_alert(item_name, st.session_state.email)
 elif upload_file is None and st.session_state.inventory is None:
     st.info("Upload a CSV to begin.")
 
