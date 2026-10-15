@@ -132,7 +132,7 @@ elif st.session_state.page=="Make Receipt":
         pdf=FPDF()
         pdf.add_page()
         pdf.set_font("Times", size=12)
-        pdf.cell(200, 60, txt=brand_name, ln=True)
+        pdf.cell(200, 60, txt=st.session_state.brand_name, ln=True)
         pdf.cell(200, 10, txt="", ln=True)
         pdf.set_font("Arial", size=12)
         pdf.cell(200, 10, txt=f"Date: {datetime.now()}", ln=True)
