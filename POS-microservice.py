@@ -7,6 +7,9 @@ from email.mime.text import MIMEText
 
 st.title("Market Organizer!")
 
+if "page" not in st.session_state:
+    st.session_state.page = "Home"
+
 #validations
 # Initialize session state safely
 if "inventory" not in st.session_state:
@@ -16,7 +19,6 @@ if "receipt" not in st.session_state:
     st.session_state.receipt = []
 
 #basic information
-st.session_state.page="Basically.."
 if "details_saved" in st.session_state and st.session_state.details_saved:
     st.success("Details saved!")
     st.write("Now you can continue:")
@@ -79,20 +81,7 @@ def send_alert(item_name, email):
             mail.login("hooria4911@gmail.com", "kuvt fhuu mexy vpnu")
             mail.send_message(msg)
             
-#pages now    
-if "page" not in st.session_state:
-    st.session_state.page = "Home"
-    
-if st.button("Track Inventory", key="nav_track"):
-    st.session_state.page="Track Inventory"
-
-if st.button("Make a receipt", key="nav_receipt"):
-    st.session_state.page="Make Receipt"
-
-if st.button("Get Daily Summary", key="nav_summary"):
-    st.session_state.page="Z receipt"
-
-
+#pages now
 if st.session_state.page=="Track Inventory":
     upload_file=st.file_uploader("Upload your current inventory status in CSV form:", type=["csv"])
     st.write("Please ensure that your csv file has clear columns named 'Item name', 'quantity', and 'price'")
@@ -109,11 +98,11 @@ if st.session_state.page=="Track Inventory":
                 for i, row in no_items.iterrows():
                     item_name=row["Item name"]
                     send_alert(item_name, email)
-            elif upload_file is None and st.session_state.inventory is None:
-                st.info("Upload a CSV to begin.")
+    elif upload_file is None and st.session_state.inventory is None:
+        st.info("Upload a CSV to begin.")
 
 
-if st.session_state.page=="Make Receipt":
+elif st.session_state.page=="Make Receipt":
     items=st.selectbox("Select items ordered:", st.session_state.inventory["Item name"])
     qty = st.number_input("Quantity:", min_value=1)
     price = st.session_state.inventory.loc[
@@ -163,7 +152,7 @@ if st.session_state.page=="Make Receipt":
             st.download_button("Download", f)
 
 
-if st.session_state.page == "Z receipt":
+elif st.session_state.page == "Z receipt":
     if st.session_state.receipt == []:
         st.error("No orders have been made yet!")
     else:
@@ -176,7 +165,16 @@ if st.session_state.page == "Z receipt":
         st.write("Grand Total:", f"{daily_total + (daily_total * tax_rate):.2f}")
         st.write("Date:", datetime.now().strftime("%Y-%m-%d"))
 
+#buttons last bruh
+        
+if st.button("Track Inventory"):
+    st.session_state.page="Track Inventory"
 
+if st.button("Make a receipt"):
+    st.session_state.page="Make Receipt"
+
+if st.button("Get Daily Summary"):
+    st.session_state.page="Z receipt"
     
 
             
