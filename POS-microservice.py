@@ -39,7 +39,7 @@ else:
 #functions
 def check_stock():
     no_rows=st.session_state.inventory[
-        st.session_state.inventory["quantity"]==0
+        st.session_state.inventory["quantity"]<=2
     ]
     return no_rows
 
@@ -117,7 +117,7 @@ elif st.session_state.page=="Make Receipt":
         "price"
     ].iloc[0]
     subtotal=price*qty
-    if st.button("Finalize Order"):
+    if st.button("Add Item"):
         st.session_state.receipt.append({
             "Items": items,
             "Quantity": qty,
@@ -138,10 +138,10 @@ elif st.session_state.page=="Make Receipt":
     if st.button("Export PDF"):
         pdf=FPDF()
         pdf.add_page()
-        pdf.set_font("Times", size=12)
+        pdf.set_font("Times", size=48)
         pdf.cell(800,60, txt=st.session_state.brand_name, ln=True)
         pdf.cell(800,10, txt="", ln=True)
-        pdf.set_font("Arial", size=12)
+        pdf.set_font("Arial", size=22)
         pdf.cell(800,10, txt=f"Date: {datetime.now()}", ln=True)
         pdf.cell(200,15, txt="", ln=True)
         for item in st.session_state.receipt:
@@ -151,7 +151,7 @@ elif st.session_state.page=="Make Receipt":
         pdf.cell(800,12, txt=f"Grand Total: {grand_total}", ln=True)
         pdf.cell(800,30, txt="", ln=True)
         pdf.add_font("Festive", "", "Festive-Regular.ttf", uni=True)
-        pdf.set_font("Festive", size=22)
+        pdf.set_font("Festive", size=48)
         pdf.cell(800, 15, txt="Thank you for shopping!", ln=True)
         pdf.cell(800,20, txt="", ln=True)
         pdf.output("receipt.pdf")
