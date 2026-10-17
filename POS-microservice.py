@@ -139,21 +139,21 @@ elif st.session_state.page=="Make Receipt":
         pdf=FPDF()
         pdf.add_page()
         pdf.set_font("Times", size=12)
-        pdf.cell(200, 60, txt=st.session_state.brand_name, ln=True)
-        pdf.cell(200, 10, txt="", ln=True)
+        pdf.cell(800,60, txt=st.session_state.brand_name, ln=True)
+        pdf.cell(800,10, txt="", ln=True)
         pdf.set_font("Arial", size=12)
-        pdf.cell(200, 10, txt=f"Date: {datetime.now()}", ln=True)
+        pdf.cell(800,10, txt=f"Date: {datetime.now()}", ln=True)
         pdf.cell(200,15, txt="", ln=True)
         for item in st.session_state.receipt:
-            pdf.cell(200, 10, txt=f"{item['Items']} x {item['Quantity']} = {item['Subtotal']}", ln=True)
-        pdf.cell(200,10, txt=f" Tax rate: {tax_rate}", ln=True)
-        pdf.cell(200, 10, txt=f"Tax amount added: {tax_added}", ln=True)
-        pdf.cell(200, 12, txt=f"Grand Total: {grand_total}", ln=True)
-        pdf.cell(200,30, txt="", ln=True)
+            pdf.cell(800,10, txt=f"{item['Items']} x {item['Quantity']} = {item['Subtotal']}", ln=True)
+        pdf.cell(800,10, txt=f" Tax rate: {tax_rate}", ln=True)
+        pdf.cell(800,10, txt=f"Tax amount added: {tax_added}", ln=True)
+        pdf.cell(800,12, txt=f"Grand Total: {grand_total}", ln=True)
+        pdf.cell(800,30, txt="", ln=True)
         pdf.add_font("Festive", "", "Festive-Regular.ttf", uni=True)
         pdf.set_font("Festive", size=22)
-        pdf.cell(200, 15, txt="Thank you for shopping!", ln=True)
-        pdf.cell(200,20, txt="", ln=True)
+        pdf.cell(800, 15, txt="Thank you for shopping!", ln=True)
+        pdf.cell(800,20, txt="", ln=True)
         pdf.output("receipt.pdf")
         with open("receipt.pdf", "rb") as f:
             st.download_button("Download", f)
@@ -174,14 +174,20 @@ elif st.session_state.page == "Z receipt":
 
 #buttons last bruh
         
-if st.button("Track Inventory"):
-    st.session_state.page="Track Inventory"
+col1, col2, col3 = st.columns(3)
 
-if st.button("Make a receipt"):
-    st.session_state.page="Make Receipt"
+with col1:
+    if st.button("Track Inventory"):
+        st.session_state.page = "Track Inventory"
 
-if st.button("Get Daily Summary"):
-    st.session_state.page="Z receipt"
+with col2:
+    if st.button("Make Receipt"):
+        st.session_state.page = "Make Receipt"
+
+with col3:
+    if st.button("Daily Summary"):
+        st.session_state.page = "Z receipt"
+
     
 
             
