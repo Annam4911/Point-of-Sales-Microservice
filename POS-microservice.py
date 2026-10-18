@@ -43,17 +43,21 @@ def check_stock():
     ]
     return no_rows
 
-def send_alert(item_name, email):
-    msg=MIMEText(f"Alert: {item_name} out of stock")
-    msg["Subject"]="Item in inventory out of stock"
-    msg["From"]="hooria4911@gmail.com"
-    msg["To"]=email
-    with smtplib.SMTP("smtp.gmail.com", 587) as mail:
-        mail.starttls()
-        mail.login("hooria4911@gmail.com", "kuvt fhuu mexy vpnu")
-        mail.send_message(msg)
 
-#file uploading shi
+#---DEVELOPMENTAL FEATURE TO BE DEBUGGED SOON---
+
+#def send_alert(item_name, email):
+    #msg=MIMEText(f"Alert: {item_name} out of stock")
+    #msg["Subject"]="Item in inventory out of stock"
+    #msg["From"]="hooria4911@gmail.com"
+    #msg["To"]=email
+    #with smtplib.SMTP("smtp.gmail.com", 587) as mail:
+        #mail.starttls()
+        #mail.login("hooria4911@gmail.com")
+        #mail.send_message(msg)
+
+
+#file uploading Stuff
 upload_file=st.file_uploader("Upload your current inventory status in CSV form:", type=["csv"])
 st.write("Please ensure that your csv file has clear columns named 'Item name', 'quantity', and 'price'")
 required_columns=['Item name', 'quantity', 'price']
@@ -67,7 +71,7 @@ if upload_file is not None:
         if not no_items.empty:
             for i, row in no_items.iterrows():
                 item_name=row["Item name"]
-                send_alert(item_name, st.session_state.email)
+                #send_alert(item_name, st.session_state.email)
 elif upload_file is None and st.session_state.inventory is None:
     st.info("Upload a CSV to begin.")
 
